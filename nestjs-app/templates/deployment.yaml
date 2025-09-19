@@ -54,14 +54,14 @@ spec:
             - name: NODE_CONFIG_ENV
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "nestjs-app.fullname" . }}-config
+                  name: {{ include "nestjs-app.fullname" $ }}-config
                   key: NODE_CONFIG_ENV
                   optional: true
             {{- range $key, $value := .Values.configMaps.data }}
             - name: {{ $key }}
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "nestjs-app.fullname" . }}-config
+                  name: {{ include "nestjs-app.fullname" $ }}-config
                   key: {{ $key }}
             {{- end }}
             {{- end }}
