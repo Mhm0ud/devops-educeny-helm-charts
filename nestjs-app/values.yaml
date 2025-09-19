@@ -75,9 +75,7 @@ healthcheck:
 
 # Environment variables
 env:
-  # Node.js environment
-  NODE_ENV: "production"
-  PORT: "3000"
+  # Additional environment variables can be added here
 
   # Database configuration (will be injected via External Secrets)
   # DB_HOST: ""
@@ -116,7 +114,6 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1000
   runAsGroup: 1000
-  fsGroup: 1000
   allowPrivilegeEscalation: false
   readOnlyRootFilesystem: false  # Some Node.js apps need write access
   capabilities:
