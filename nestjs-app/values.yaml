@@ -1,0 +1,166 @@
+# Default values for nestjs-app
+# This is a YAML-formatted file with default values for the Helm chart
+
+# Application configuration
+app:
+  name: ""  # Will be overridden per application
+  version: "1.0.0"
+  environment: "dev"
+
+# Image configuration
+image:
+  repository: ""  # Will be set to ECR repository
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+# Deployment configuration
+replicaCount: 1
+
+# Resource configuration optimized for cost
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+# Autoscaling configuration
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+# Service configuration
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+  annotations: {}
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: ""  # Will be set per environment
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Health checks
+healthcheck:
+  enabled: true
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: 3000
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: 3000
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
+
+# Environment variables
+env:
+  # Node.js environment
+  NODE_ENV: "production"
+  PORT: "3000"
+
+  # Database configuration (will be injected via External Secrets)
+  # DB_HOST: ""
+  # DB_PORT: "5432"
+  # DB_NAME: ""
+  # DB_USER: ""
+  # DB_PASSWORD: ""  # From External Secret
+
+  # NATS configuration (from ConfigMap)
+  # NATS_URL: ""
+
+  # Application-specific variables
+  # API_VERSION: "v1"
+  # LOG_LEVEL: "info"
+
+# External Secrets configuration
+externalSecrets:
+  enabled: true
+  secretStore: "aws-secrets-manager-dev"  # Will be overridden per environment
+  secrets: []
+  # Example:
+  # - secretName: "app-database-credentials"
+  #   secretKey: "database-password"
+  #   envName: "DB_PASSWORD"
+
+# ConfigMaps
+configMaps:
+  enabled: true
+  data: {}
+  # Example:
+  # NATS_URL: "nats://nats-dev.dev.svc.cluster.local:4222"
+  # API_BASE_URL: "https://api.dev.example.com"
+
+# Security context
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false  # Some Node.js apps need write access
+  capabilities:
+    drop:
+      - ALL
+
+# Pod security context
+podSecurityContext:
+  fsGroup: 1000
+
+# Node selection
+nodeSelector: {}
+
+# Tolerations for Karpenter node pools
+tolerations:
+  - key: workload-type
+    value: dev
+    effect: NoSchedule
+
+# Affinity rules
+affinity: {}
+
+# Service account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Pod disruption budget
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+# Network policy
+networkPolicy:
+  enabled: false
+  ingress: []
+  egress: []
+
+# Monitoring configuration
+monitoring:
+  enabled: false
+  serviceMonitor:
+    enabled: false
+    port: 3000
+    path: /metrics
+    interval: 30s

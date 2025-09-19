@@ -1,0 +1,16 @@
+apiVersion: v2
+name: nestjs-app
+description: A Helm chart for NestJS/Next.js applications
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - nodejs
+  - nestjs
+  - nextjs
+  - web
+maintainers:
+  - name: DevOps Team
+    email: devops@company.com
+sources:
+  - https://github.com/your-org/nestjs-app-template
