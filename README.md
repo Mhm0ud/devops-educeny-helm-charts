@@ -137,7 +137,6 @@ externalSecrets:
 This chart is designed to work with:
 
 - **ArgoCD**: GitOps-based deployment automation
-- **Karpenter**: Cost-optimized node auto-scaling
 - **External Secrets Operator**: Secure secret management
 - **NGINX Ingress Controller**: Load balancing and routing
 - **NATS**: Inter-service messaging
@@ -239,7 +238,6 @@ The chart includes built-in support for:
 
 - **Resource Limits**: Prevent resource over-allocation
 - **HPA Configuration**: Auto-scale based on actual usage
-- **Karpenter Integration**: Automatic node provisioning/de-provisioning
 - **Spot Instance Support**: Tolerations for cost-optimized nodes
 
 ## 📝 License
